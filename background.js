@@ -9,12 +9,12 @@ const searchPaths = {
   "https://www.fragrantica.ro": "cautare",
 };
 
-// SUPER DYNAMIC
 chrome.runtime.onInstalled.addListener(() => {
   // Set default settings on installation
   chrome.storage.sync.set({
     fragranticaLanguageUrl: "https://www.fragrantica.com",
     useParfumoSearch: false,
+    usePerfumeHubSearch: false, // Add new setting for PerfumeHub
   });
 
   // Initialize the context menu
@@ -25,8 +25,15 @@ chrome.runtime.onInstalled.addListener(() => {
 function updateContextMenu() {
   // Clear existing context menus
   chrome.contextMenus.removeAll(() => {
-    chrome.storage.sync.get("useParfumoSearch", ({ useParfumoSearch }) => {
-      const title = useParfumoSearch ? "Search on Fragrantica + Parfumo" : "Search on Fragrantica";
+    chrome.storage.sync.get(["useParfumoSearch", "usePerfumeHubSearch"], ({ useParfumoSearch, usePerfumeHubSearch }) => {
+      let title = "Search on Fragrantica";
+      if (useParfumoSearch && usePerfumeHubSearch) {
+        title = "Search on Fragrantica + Parfumo + PerfumeHub";
+      } else if (useParfumoSearch) {
+        title = "Search on Fragrantica + Parfumo";
+      } else if (usePerfumeHubSearch) {
+        title = "Search on Fragrantica + PerfumeHub";
+      }
 
       // Create the context menu
       chrome.contextMenus.create({
@@ -38,9 +45,9 @@ function updateContextMenu() {
   });
 }
 
-// Listen for changes to the useParfumoSearch setting and update the context menu
+// Listen for changes to the settings and update the context menu
 chrome.storage.onChanged.addListener((changes) => {
-  if (changes.useParfumoSearch || changes.fragranticaLanguageUrl) {
+  if (changes.useParfumoSearch || changes.fragranticaLanguageUrl || changes.usePerfumeHubSearch) {
     updateContextMenu();
   }
 });
@@ -63,6 +70,14 @@ chrome.contextMenus.onClicked.addListener((info) => {
       if (useParfumoSearch) {
         const parfumoUrl = `https://www.parfumo.com/s_perfumes_x.php?in=1&filter=${fragranceName}`;
         chrome.tabs.create({ url: parfumoUrl });
+      }
+    });
+
+    // Perform PerfumeHub search if enabled
+    chrome.storage.sync.get("usePerfumeHubSearch", ({ usePerfumeHubSearch }) => {
+      if (usePerfumeHubSearch) {
+        const perfumeHubUrl = `https://perfumehub.pl/search?q=${fragranceName}`;
+        chrome.tabs.create({ url: perfumeHubUrl });
       }
     });
   }
