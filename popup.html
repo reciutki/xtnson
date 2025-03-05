@@ -5,17 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fragrantica Settings</title>
-  <style>
-    body {
-      width: 200px;
-      padding: 10px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -43,17 +33,15 @@
     <option value="https://www.fragrantica.co.il">עברית (Israel)</option>
   </select>
 
-  <br>
-
-  <label for="parfumoSearch" id="parfumo-label">Enable Parfumo Search:</label>
-  <input type="checkbox" id="parfumoSearch">
-
-  <br>
-
-  <label for="perfumehubSearch" id="perfumehub-label">Enable PerfumeHub Search:</label>
-  <input type="checkbox" id="perfumehubSearch">
-
-  <br>
+  <div class="checkbox-container">
+    <input type="checkbox" id="parfumoSearch">
+    <label for="parfumoSearch" id="parfumo-label">Enable Parfumo Search</label>
+  </div>
+  
+  <div class="checkbox-container">
+    <input type="checkbox" id="perfumehubSearch">
+    <label for="perfumehubSearch" id="perfumehub-label">Enable PerfumeHub Search</label>
+  </div>
 
   <button id="save" id="save-button">Save</button>
   <p id="status"></p>
