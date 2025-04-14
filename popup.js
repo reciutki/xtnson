@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const languageSelect = document.getElementById("language");
-  const saveButton = document.getElementById("save");
+  const saveButton = document.getElementById("save-button");
   const parfumoSearchCheckbox = document.getElementById("parfumoSearch");
   const perfumehubSearchCheckbox = document.getElementById("perfumehubSearch");
   const status = document.getElementById("status");

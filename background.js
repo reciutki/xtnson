@@ -14,7 +14,9 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({
     fragranticaLanguageUrl: "https://www.fragrantica.com",
     useParfumoSearch: false,
-    usePerfumeHubSearch: false, // Add new setting for PerfumeHub
+    usePerfumeHubSearch: false,
+  }).catch(error => {
+    console.error("Error setting default settings:", error);
   });
 
   // Initialize the context menu
@@ -25,23 +27,26 @@ chrome.runtime.onInstalled.addListener(() => {
 function updateContextMenu() {
   // Clear existing context menus
   chrome.contextMenus.removeAll(() => {
-    chrome.storage.sync.get(["useParfumoSearch", "usePerfumeHubSearch"], ({ useParfumoSearch, usePerfumeHubSearch }) => {
-      let title = "Search on Fragrantica";
-      if (useParfumoSearch && usePerfumeHubSearch) {
-        title = "Search on Fragrantica + Parfumo + PerfumeHub";
-      } else if (useParfumoSearch) {
-        title = "Search on Fragrantica + Parfumo";
-      } else if (usePerfumeHubSearch) {
-        title = "Search on Fragrantica + PerfumeHub";
-      }
+    chrome.storage.sync.get(["useParfumoSearch", "usePerfumeHubSearch"])
+      .then(({ useParfumoSearch, usePerfumeHubSearch }) => {
+        let title = "Search on Fragrantica";
+        if (useParfumoSearch && usePerfumeHubSearch) {
+          title = "Search on Fragrantica + Parfumo + PerfumeHub";
+        } else if (useParfumoSearch) {
+          title = "Search on Fragrantica + Parfumo";
+        } else if (usePerfumeHubSearch) {
+          title = "Search on Fragrantica + PerfumeHub";
+        }
 
-      // Create the context menu
-      chrome.contextMenus.create({
-        id: "searchFragrantica",
-        title,
-        contexts: ["selection"],
+        chrome.contextMenus.create({
+          id: "searchFragrantica",
+          title,
+          contexts: ["selection"],
+        });
+      })
+      .catch(error => {
+        console.error("Error updating context menu:", error);
       });
-    });
   });
 }
 
@@ -57,28 +62,33 @@ chrome.contextMenus.onClicked.addListener((info) => {
   if (info.menuItemId === "searchFragrantica" && info.selectionText) {
     const fragranceName = encodeURIComponent(info.selectionText.trim());
 
-    // Perform Fragrantica search
-    chrome.storage.sync.get("fragranticaLanguageUrl", ({ fragranticaLanguageUrl }) => {
-      const domain = fragranticaLanguageUrl || "https://www.fragrantica.com"; // Default to English
-      const searchPath = searchPaths[domain] || "search"; // Default search path
-      const url = `${domain}/${searchPath}/?query=${fragranceName}`;
-      chrome.tabs.create({ url });
-    });
+    // Get all settings in one call
+    chrome.storage.sync.get([
+      "fragranticaLanguageUrl", 
+      "useParfumoSearch", 
+      "usePerfumeHubSearch"
+    ])
+    .then((settings) => {
+      // Perform Fragrantica search
+      const domain = settings.fragranticaLanguageUrl || "https://www.fragrantica.com";
+      const searchPath = searchPaths[domain] || "search";
+      const fragranticaUrl = `${domain}/${searchPath}/?query=${fragranceName}`;
+      chrome.tabs.create({ url: fragranticaUrl });
 
-    // Perform Parfumo search if enabled
-    chrome.storage.sync.get("useParfumoSearch", ({ useParfumoSearch }) => {
-      if (useParfumoSearch) {
+      // Perform Parfumo search if enabled
+      if (settings.useParfumoSearch) {
         const parfumoUrl = `https://www.parfumo.com/s_perfumes_x.php?in=1&filter=${fragranceName}`;
         chrome.tabs.create({ url: parfumoUrl });
       }
-    });
 
-    // Perform PerfumeHub search if enabled
-    chrome.storage.sync.get("usePerfumeHubSearch", ({ usePerfumeHubSearch }) => {
-      if (usePerfumeHubSearch) {
+      // Perform PerfumeHub search if enabled
+      if (settings.usePerfumeHubSearch) {
         const perfumeHubUrl = `https://perfumehub.pl/search?q=${fragranceName}`;
         chrome.tabs.create({ url: perfumeHubUrl });
       }
+    })
+    .catch(error => {
+      console.error("Error performing searches:", error);
     });
   }
 });
