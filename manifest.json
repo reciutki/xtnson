@@ -8,7 +8,9 @@
     "activeTab",
     "scripting",
     "storage",
-    "tabs"
+    "tabs",
+    "tabGroups",
+    "commands"
   ],
   "host_permissions": [
     "<all_urls>"
@@ -24,6 +26,15 @@
   },
   "icons": {
     "128": "icon128.png"
+  },
+  "commands": {
+    "search-fragrance": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "Command+Shift+F"
+      },
+      "description": "Search selected text as fragrance"
+    }
   },
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self';"
