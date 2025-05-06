@@ -1,52 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fragrantica Settings</title>
+  <title>Fragrance Finder Settings</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <h1 id="settings-title">Settings</h1>
+  <h1>Fragrance Finder Settings</h1>
 
-  <label for="language" id="language-label">Select your Fragrantica language</label>
-  <select id="language">
-    <option value="https://www.fragrantica.com">English (UK)</option>
-    <option value="https://www.fragrantica.de">Deutsch (Germany)</option>
-    <option value="https://www.fragrantica.es">Español (Spain)</option>
-    <option value="https://www.fragrantica.fr">Français (France)</option>
-    <option value="https://www.fragrantica.cz">Čeština (Czech)</option>
-    <option value="https://www.fragrantica.it">Italiano (Italy)</option>
-    <option value="https://www.fragrantica.ru">Русский (Russia)</option>
-    <option value="https://www.fragrantica.pl">Polski (Poland)</option>
-    <option value="https://www.fragrantica.com.br">Português (Brazil)</option>
-    <option value="https://www.fragrantica.gr">Ελληνικά (Greece)</option>
-    <option value="https://www.fragrantica.asia">汉语 (Asia)</option>
-    <option value="https://www.fragrantica.nl">Nederlands (Netherlands)</option>
-    <option value="https://www.punmiris.com">Srpski (Serbia)</option>
-    <option value="https://www.fragrantica.ro">Română (Romania)</option>
-    <option value="https://www.fragranticarabia.com">العربية (Arabic)</option>
-    <option value="https://www.fragrantica.ua">Українська (Ukraine)</option>
-    <option value="https://www.fragrantica.mn">Монгол (Mongolia)</option>
-    <option value="https://www.fragrantica.co.il">עברית (Israel)</option>
-  </select>
+  <div class="setting-group">
+    <h2>Search Options</h2>
+    <label for="language">Fragrantica Language:</label>
+    <select id="language">
+      <option value="https://www.fragrantica.com">English (UK)</option>
+      <option value="https://www.fragrantica.de">Deutsch (Germany)</option>
+      <option value="https://www.fragrantica.es">Español (Spain)</option>
+      <option value="https://www.fragrantica.fr">Français (France)</option>
+      <option value="https://www.fragrantica.cz">Čeština (Czech)</option>
+      <option value="https://www.fragrantica.it">Italiano (Italy)</option>
+      <option value="https://www.fragrantica.ru">Русский (Russia)</option>
+      <option value="https://www.fragrantica.pl">Polski (Poland)</option>
+      <option value="https://www.fragrantica.com.br">Português (Brazil)</option>
+      <option value="https://www.fragrantica.gr">Ελληνικά (Greece)</option>
+      <option value="https://www.fragrantica.asia">汉语 (Asia)</option>
+      <option value="https://www.fragrantica.nl">Nederlands (Netherlands)</option>
+      <option value="https://www.punmiris.com">Srpski (Serbia)</option>
+      <option value="https://www.fragrantica.ro">Română (Romania)</option>
+      <option value="https://www.fragranticarabia.com">العربية (Arabic)</option>
+      <option value="https://www.fragrantica.ua">Українська (Ukraine)</option>
+      <option value="https://www.fragrantica.mn">Монгол (Mongolia)</option>
+      <option value="https://www.fragrantica.co.il">עברית (Israel)</option>
+    </select>
 
-  <div class="checkbox-container">
-    <input type="checkbox" id="parfumoSearch">
-    <label for="parfumoSearch" id="parfumo-label">Enable Parfumo Search</label>
+    <div class="checkbox-container">
+      <input type="checkbox" id="parfumoSearch">
+      <label for="parfumoSearch">Enable Parfumo Search</label>
+    </div>
+
+    <div class="checkbox-container">
+      <input type="checkbox" id="perfumehubSearch">
+      <label for="perfumehubSearch">Enable PerfumeHub Search</label>
+    </div>
   </div>
 
-  <div class="checkbox-container">
-    <input type="checkbox" id="perfumehubSearch">
-    <label for="perfumehubSearch" id="perfumehub-label">Enable PerfumeHub Search</label>
+  <div class="setting-group">
+    <h2>Tab Behavior</h2>
+    <div class="checkbox-container">
+      <input type="checkbox" id="focusNewTab">
+      <label for="focusNewTab">Switch to new tab immediately</label>
+    </div>
   </div>
 
-  <button id="save-button">Save</button>
+  <div class="setting-group">
+    <h2>Tab Group Appearance</h2>
+    <label for="groupColor">Group Color:</label>
+    <select id="groupColor">
+      <option value="grey">Grey</option>
+      <option value="blue">Blue</option>
+      <option value="red">Red</option>
+      <option value="yellow">Yellow</option>
+      <option value="green">Green</option>
+      <option value="pink">Pink</option>
+      <option value="purple">Purple</option>
+      <option value="cyan">Cyan</option>
+    </select>
+
+    <div class="checkbox-container">
+      <input type="checkbox" id="groupCollapsed">
+      <label for="groupCollapsed">Collapse group by default</label>
+    </div>
+  </div>
+
+  <button id="save-button">Save Settings</button>
   <p id="status"></p>
 
   <script src="popup.js"></script>
 </body>
-
 </html>

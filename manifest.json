@@ -30,8 +30,8 @@
   "commands": {
     "search-fragrance": {
       "suggested_key": {
-        "default": "Ctrl+Shift+F",
-        "mac": "Command+Shift+F"
+        "default": "Ctrl+Shift+L",
+        "mac": "Command+Shift+L"
       },
       "description": "Search selected text as fragrance"
     }
